@@ -1,0 +1,37 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./heroi-backend
+    ports:
+      - "5001:5001"  # Altere a porta se precisar
+    depends_on:
+      - db
+    networks:
+      - my-network
+
+  frontend:
+    build:
+      context: ./heroi-app
+    ports:
+      - "5173:5173"  # Vite usa a porta 5173 por padrão
+    depends_on:
+      - backend
+    networks:
+      - my-network
+
+  db:
+    image: mongo:5.0
+    container_name: mongo-knightdb
+    ports:
+      - "27017:27017"
+    volumes:
+      - knightdb:/data/db
+    networks:
+      - my-network
+
+volumes:
+  knightdb:
+
+networks:
+  my-network:
